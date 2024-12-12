@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-
 import '../models/response/error_response_model.dart';
 
 class NetworkingUtil {
@@ -11,8 +10,9 @@ class NetworkingUtil {
     return headers;
   }
 
-  static Options setupNetworkOptions(String? withToken, {Options? otherOptions}) {
-    if(otherOptions != null) {
+  static Options setupNetworkOptions(String? withToken,
+      {Options? otherOptions}) {
+    if (otherOptions != null) {
       otherOptions.headers = setupTokenHeader(withToken);
       return otherOptions;
     } else {
@@ -28,15 +28,16 @@ class NetworkingUtil {
       if (error is DioException) {
         errResponse = ErrorResponseModel.fromJson(error.response?.data);
       }
-      if (errResponse != null && errResponse.data != null &&
+      if (errResponse != null &&
+          errResponse.data != null &&
           errResponse.data!.errorData != null &&
           errResponse.data!.errorData!.isNotEmpty) {
-        return errResponse.data!.errorData![errResponse.data!.errorData!.keys
-            .first]!.first;
+        return errResponse
+            .data!.errorData![errResponse.data!.errorData!.keys.first]!.first;
       } else if (errResponse != null && errResponse.message != null) {
         return errResponse.message!;
       } else {
-        return 'Unknown Error';
+        return error;
       }
     } catch (err) {
       return 'Unknown Error';

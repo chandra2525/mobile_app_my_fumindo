@@ -3,9 +3,7 @@ import 'package:mobile_app_my_fumindo/app/routes/route_name.dart';
 import 'package:mobile_app_my_fumindo/src/constants/local_data_key.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../constants/endpoint.dart';
-import '../features/dashboard/products/list/component/product_list_controller.dart';
 import '../models/response/user_response_model.dart';
 import '../utils/networking_util.dart';
 import '../widgets/snackbar_widget.dart';
@@ -20,34 +18,31 @@ class UserRepository {
 
   final box = GetStorage();
 
-  Future<void> login(etPhone, etPassword, etCountryCode) async {
-    //Artificial delay to simulate logging in process
-    // await Future.delayed(const Duration(seconds: 2));
-    //Placeholder token. DO NOT call real logout API using this token
-    // _local.write(
-    //     LocalDataKey.token, "621|DBiUBMfsEtX01tbdu4duNRCNMTt7PV5blr6zxTvq");
+  Future<void> login(etUsername, etPassword) async {
     var body = {
-      "phone_number": etPhone,
+      "username": etUsername,
       "password": etPassword,
-      // "phone_number": "85173254399",
-      // "password": '12345678',
-      "country_code": etCountryCode
     };
     try {
       final responseJson = await _client.post(
-        Endpoint.signIn,
-        queryParameters: body,
-        // options: NetworkingUtil.setupNetworkOptions(
-        //     'Bearer ${_local.read(LocalDataKey.token)}'),
+        Endpoint.logIn,
+        data: body,
+        options: Options(
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        ),
       );
       final data = responseJson.data;
 
       print("data user ${responseJson.statusCode.toString()}");
-      if (responseJson.statusCode == 200) {
-        var token = data['data']['token'];
-        box.write('token', token);
-        box.write('phone', etPhone);
-        // box.write('password', etPassword);
+      if (responseJson.statusCode == 201) {
+        var accessToken = data['access_token'];
+        var userId = data['user_id'];
+
+        box.write('access_token', accessToken);
+        box.write('user_id', userId);
+        box.write('etUsername', etUsername);
 
         Get.offAllNamed(RouteName.dashboard);
       } else {

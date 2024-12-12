@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/text_style.dart';
+
 class ButtonIcon extends StatelessWidget {
   const ButtonIcon({
     Key? key,
@@ -31,13 +33,13 @@ class ButtonIcon extends StatelessWidget {
         backgroundColor: buttonColor,
         shape: borderColor != null
             ? RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(16),
                 side: BorderSide(width: 1.5, color: borderColor!),
               )
             : RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(16),
               ),
-        splashFactory: NoSplash.splashFactory,
+        // splashFactory: NoSplash.splashFactory,
         elevation: 0,
         side: side,
       ),
@@ -55,11 +57,7 @@ class ButtonIcon extends StatelessWidget {
               : const SizedBox.shrink(),
       label: Text(
         textLabel,
-        style: TextStyle(
-          fontSize: 14,
-          color: textColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: TextStyles.rubik16MedWhite,
       ),
     );
   }

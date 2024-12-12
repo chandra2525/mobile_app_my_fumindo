@@ -1,5 +1,5 @@
 import 'package:mobile_app_my_fumindo/src/features/dashboard/products/list/product_list_page.dart';
-import 'package:mobile_app_my_fumindo/src/features/dashboard/profile/profile_page.dart';
+import 'package:mobile_app_my_fumindo/src/features/dashboard/asset/asset_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,7 +22,9 @@ class DashboardController extends GetxController {
     _listPages.value = [
       // const ProductListPage(),
       // const FavoriteListPage(),
-      // const ProfilePage(),
+      const AssetPage(),
+      const AssetPage(),
+      const AssetPage(),
     ];
   }
 }

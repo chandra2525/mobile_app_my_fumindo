@@ -3,9 +3,6 @@ import 'package:mobile_app_my_fumindo/src/utils/networking_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-
-import '../../../../app/routes/route_name.dart';
 import '../../../widgets/snackbar_widget.dart';
 
 class LoginController extends GetxController {
@@ -15,8 +12,7 @@ class LoginController extends GetxController {
     required UserRepository userRepository,
   }) : _userRepository = userRepository;
 
-  final etCountryCode = TextEditingController();
-  final etPhone = TextEditingController();
+  final etUsername = TextEditingController();
   final etPassword = TextEditingController();
 
   final tokenController = TextEditingController();
@@ -27,26 +23,18 @@ class LoginController extends GetxController {
 
   var isLoadingLogin = false.obs;
 
-  // final TextEditingController controllerCode = TextEditingController();
-  // String initialCountry = 'ID';
-  // PhoneNumber number = PhoneNumber(isoCode: 'ID');
-
   // FocusNode focusNode = FocusNode();
 
   void doLogin() async {
     isLoadingLogin.value = true;
-    // if (etPhone.text != '85173254399' || etPassword.text != '12345678') {
-    //   SnackbarWidget.showFailedSnackbar('Email atau password salah');
-    //   Future.delayed(const Duration(seconds: 3), () {
-    //     isLoadingLogin.value = false;
-    //   });
-    //   return;
-    // }
     try {
-      final data = await _userRepository.login(
-          etPhone.text, etPassword.text, etCountryCode.text);
+      final data =
+          await _userRepository.login(etUsername.text, etPassword.text);
     } catch (error) {
-      SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
+      print('coba error' + error.toString());
+      SnackbarWidget.showFailedSnackbar(
+          NetworkingUtil.errorMessage('Username atau Password salah'));
+      // SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
     }
 
     isLoadingLogin.value = false;

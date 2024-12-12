@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../products/detail_product/component/product_detail_controller.dart';
-import '../profile/component/profile_controller.dart';
+import '../asset/component/asset_controller.dart';
 
 class DashboardBinding extends Bindings {
   @override
@@ -26,9 +26,9 @@ class DashboardBinding extends Bindings {
       DashboardController(),
     );
 
-    // Get.put(ProfileController(
-    //   userRepository: Get.find<UserRepository>(),
-    // ));
+    Get.put(AssetController(
+      userRepository: Get.find<UserRepository>(),
+    ));
 
     // Get.put(ProductListController(
     //   productRepository: Get.find<ProductRepository>(),

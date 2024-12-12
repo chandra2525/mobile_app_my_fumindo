@@ -1,14 +1,14 @@
 import 'package:mobile_app_my_fumindo/app/routes/route_name.dart';
 import 'package:mobile_app_my_fumindo/src/features/dashboard/component/dashboard_binding.dart';
 import 'package:mobile_app_my_fumindo/src/features/dashboard/dashboard_page.dart';
-import 'package:mobile_app_my_fumindo/src/features/dashboard/profile/edit/edit_profile_page.dart';
+import 'package:mobile_app_my_fumindo/src/features/dashboard/asset/edit/edit_profile_page.dart';
 import 'package:get/get.dart';
 
 import '../../src/features/boarding/boarding_page.dart';
 import '../../src/features/boarding/component/boarding_binding.dart';
 import '../../src/features/dashboard/products/detail_product/product_detail_page.dart';
 import '../../src/features/dashboard/products/list/favorite_list_page.dart';
-import '../../src/features/dashboard/profile/edit/component/edit_profile_binding.dart';
+import '../../src/features/dashboard/asset/edit/component/edit_profile_binding.dart';
 import '../../src/features/login/component/login_binding.dart';
 import '../../src/features/login/login_page.dart';
 import '../../src/features/splash_screen/component/splash_screen_binding.dart';
@@ -33,7 +33,7 @@ class AppRoute {
     ),
     GetPage(
       name: RouteName.dashboard,
-      page: () => const DashboardPage(),
+      page: () => DashboardPage(),
       binding: DashboardBinding(),
     ),
     // GetPage(

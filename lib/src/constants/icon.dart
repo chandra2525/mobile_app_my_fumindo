@@ -1,10 +1,12 @@
-const ic_password = 'assets/icons/icon-password.png';
+const icPassword = 'assets/icons/icon-password.png';
 
-const ic_home = 'assets/icons/icon-home.png';
-const ic_home_active = 'assets/icons/icon-home-active.png';
+// const ic_home = 'assets/icons/icon-home.png';
+// const ic_home_active = 'assets/icons/icon-home-active.png';
 
-const ic_profile = 'assets/icons/icon-profile.png';
-const ic_profile_active = 'assets/icons/icon-profile-active.png';
+const icMap = 'assets/icons/icon-map.png';
+const icTask = 'assets/icons/icon-task.png';
+const icAsset = 'assets/icons/icon-asset.png';
+const icMenu = 'assets/icons/icon-menu.png';
 
 const ic_check_round = 'assets/icons/icon-check-round.png';
 const ic_failed_round = 'assets/icons/icon-failed.png';

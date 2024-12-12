@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
 import 'app/app_binding.dart';
 
 void main() async {
@@ -19,7 +18,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Entrance Test",
+      title: "MyFumindo",
       initialRoute: RouteName.splashScreen,
       getPages: AppRoute.pages,
       initialBinding: AppBinding(),
