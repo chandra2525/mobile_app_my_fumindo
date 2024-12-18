@@ -1,14 +1,16 @@
 import 'package:mobile_app_my_fumindo/app/routes/route_name.dart';
 import 'package:mobile_app_my_fumindo/src/features/dashboard/component/dashboard_binding.dart';
 import 'package:mobile_app_my_fumindo/src/features/dashboard/dashboard_page.dart';
-import 'package:mobile_app_my_fumindo/src/features/dashboard/asset/edit/edit_profile_page.dart';
 import 'package:get/get.dart';
 
+import '../../src/features/asset_loan_form/asset_loan_form_page.dart';
 import '../../src/features/boarding/boarding_page.dart';
 import '../../src/features/boarding/component/boarding_binding.dart';
+import '../../src/features/asset_dashboard/component/asset_dashboard_binding.dart';
+import '../../src/features/asset_dashboard/asset_dashboard_page.dart';
 import '../../src/features/dashboard/products/detail_product/product_detail_page.dart';
 import '../../src/features/dashboard/products/list/favorite_list_page.dart';
-import '../../src/features/dashboard/asset/edit/component/edit_profile_binding.dart';
+import '../../src/features/asset_loan_form/component/asset_loan_form_binding.dart';
 import '../../src/features/login/component/login_binding.dart';
 import '../../src/features/login/login_page.dart';
 import '../../src/features/splash_screen/component/splash_screen_binding.dart';
@@ -35,6 +37,16 @@ class AppRoute {
       name: RouteName.dashboard,
       page: () => DashboardPage(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: RouteName.assetDashboard,
+      page: () => AssetDashboardPage(),
+      binding: AssetDashboardBinding(),
+    ),
+    GetPage(
+      name: RouteName.assetLoanForm,
+      page: () => AssetLoanFormPage(),
+      binding: LoanFormBinding(),
     ),
     // GetPage(
     //   name: RouteName.productDetail,

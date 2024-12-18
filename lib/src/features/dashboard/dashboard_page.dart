@@ -1,7 +1,7 @@
 import 'package:mobile_app_my_fumindo/src/features/dashboard/component/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile_app_my_fumindo/src/features/drawer/drawer_screen_page.dart';
+import 'package:mobile_app_my_fumindo/src/features/drawer/drawer_page.dart';
 import '../../constants/color.dart';
 import '../../constants/icon.dart';
 import '../../constants/text_style.dart';
@@ -15,9 +15,11 @@ class DashboardPage extends GetView<DashboardController> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: white,
-      drawer: DrawerScreenPage(),
+      drawer: DrawerPage(),
       appBar: AppBar(
         backgroundColor: white,
+        elevation: 10.0,
+        shadowColor: shadowColorAppbar,
         leading: InkWell(
           onTap: () => _scaffoldKey.currentState?.openDrawer(),
           borderRadius: BorderRadius.circular(8),
@@ -32,7 +34,6 @@ class DashboardPage extends GetView<DashboardController> {
           SizedBox(
             width: 55,
             height: 55,
-            child: Icon(Icons.shop, size: 27, color: Colors.white),
           )
         ],
         centerTitle: true,
@@ -57,7 +58,6 @@ class DashboardPage extends GetView<DashboardController> {
             ),
           ),
         ),
-        elevation: 0,
       ),
       body: Obx(
         () => IndexedStack(
@@ -80,7 +80,7 @@ class DashboardPage extends GetView<DashboardController> {
             ),
             boxShadow: const [
               BoxShadow(
-                color: shadowColor,
+                color: shadowColorNavbar,
                 blurRadius: 100,
                 offset: Offset(0, 0),
                 spreadRadius: 10,

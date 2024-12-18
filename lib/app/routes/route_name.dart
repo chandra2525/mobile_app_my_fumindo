@@ -4,6 +4,9 @@ abstract class RouteName {
   static const login = '/login';
   static const dashboard = "/dashboard";
 
+  static const assetDashboard = "/asset/dashboard";
+  static const assetLoanForm = "/asset/loan/form";
+
   static const editProfile = '/profile/edit';
   static const productDetail = '/product/detail';
   static const productFavorite = '/product/favorite';

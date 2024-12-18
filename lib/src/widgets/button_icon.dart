@@ -33,14 +33,14 @@ class ButtonIcon extends StatelessWidget {
         backgroundColor: buttonColor,
         shape: borderColor != null
             ? RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(8),
                 side: BorderSide(width: 1.5, color: borderColor!),
               )
             : RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(8),
               ),
         // splashFactory: NoSplash.splashFactory,
-        elevation: 0,
+        // elevation: 0,
         side: side,
       ),
       onPressed: () {

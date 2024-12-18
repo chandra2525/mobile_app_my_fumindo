@@ -55,30 +55,63 @@ class UserRepository {
   }
 
   Future<void> logout() async {
-    //Artificial delay to simulate logging out process
     // await Future.delayed(const Duration(seconds: 2));
-    print(box.read('token'));
+    print(box.read('access_token'));
 
     try {
       final responseJson = await _client.post(
-        Endpoint.signOut,
-        // queryParameters: body,
-        options:
-            NetworkingUtil.setupNetworkOptions('Bearer ${box.read('token')}'),
+        Endpoint.logOut,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${box.read('access_token')}",
+          },
+        ),
       );
       final data = responseJson.data;
-
-      print("data user ${data}");
-      if (responseJson.statusCode == 200) {
+      if (responseJson.statusCode == 201) {
         await _local.remove(LocalDataKey.token);
 
-        box.remove('token');
-        box.remove('phone');
-        // final ProductListController controller =
-        //     Get.find<ProductListController>();
-        // await controller.clearFavorites();
+        box.remove('access_token');
+        box.remove('user_id');
+        box.remove('etUsername');
 
         Get.offAllNamed(RouteName.login);
+        SnackbarWidget.showFailedSnackbar(
+            NetworkingUtil.errorMessage(data['message']));
+      } else {
+        SnackbarWidget.showFailedSnackbar(
+            NetworkingUtil.errorMessage(data['message']));
+      }
+    } on DioError catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> refreshToken() async {
+    final accessToken = box.read('access_token');
+    var body = {
+      "refresh_token": accessToken,
+    };
+
+    try {
+      final responseJson = await _client.post(
+        Endpoint.refresh,
+        data: body,
+        options: Options(
+          headers: {
+            // "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $accessToken",
+          },
+        ),
+      );
+      final data = responseJson.data;
+      print("Hasil token terbaru : ${responseJson.statusCode.toString()}");
+
+      if (responseJson.statusCode == 201) {
+        var accessToken = data['access_token'];
+        box.write('access_token', accessToken);
+        print("Token berhasil diperbarui : $accessToken");
       } else {
         SnackbarWidget.showFailedSnackbar(
             NetworkingUtil.errorMessage(data['message']));

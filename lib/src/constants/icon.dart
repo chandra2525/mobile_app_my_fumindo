@@ -7,6 +7,12 @@ const icMap = 'assets/icons/icon-map.png';
 const icTask = 'assets/icons/icon-task.png';
 const icAsset = 'assets/icons/icon-asset.png';
 const icMenu = 'assets/icons/icon-menu.png';
+const icProfile = 'assets/icons/icon-profile.png';
+const icChangePass = 'assets/icons/icon-changepass.png';
+const icSupport = 'assets/icons/icon-support.png';
+const icAbout = 'assets/icons/icon-about.png';
+const icSearch = 'assets/icons/icon-search.png';
+const icDelete = 'assets/icons/icon-delete.png';
 
 const ic_check_round = 'assets/icons/icon-check-round.png';
 const ic_failed_round = 'assets/icons/icon-failed.png';

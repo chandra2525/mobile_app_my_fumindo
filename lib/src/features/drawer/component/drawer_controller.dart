@@ -7,8 +7,10 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../../app/routes/route_name.dart';
 import '../../../utils/networking_util.dart';
 import '../../../widgets/snackbar_widget.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class DrawerScreenController extends GetxController {
+  var version = "".obs;
   final UserRepository _userRepository;
 
   final _name = "".obs;
@@ -36,27 +38,33 @@ class DrawerScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadUserFromServer();
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      // String appName = packageInfo.appName;
+      // String packageName = packageInfo.packageName;
+      version.value = packageInfo.version;
+      // String buildNumber = packageInfo.buildNumber;
+    });
+    // loadUserFromServer();
   }
 
-  void loadUserFromServer() async {
-    try {
-      final response = await _userRepository.getUser();
-      if (response.status == 0) {
-        final localUser = response.data;
+  // void loadUserFromServer() async {
+  //   try {
+  //     final response = await _userRepository.getUser();
+  //     if (response.status == 0) {
+  //       final localUser = response.data;
 
-        _name.value = localUser.name;
-        _phone.value = localUser.countryCode.isNotEmpty
-            ? "+${localUser.countryCode}${localUser.phone}"
-            : "";
-        _profilePictureUrl.value = localUser.profilePicture ?? '';
-      } else {
-        SnackbarWidget.showFailedSnackbar(response.message);
-      }
-    } catch (error) {
-      SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
-    }
-  }
+  //       _name.value = localUser.name;
+  //       _phone.value = localUser.countryCode.isNotEmpty
+  //           ? "+${localUser.countryCode}${localUser.phone}"
+  //           : "";
+  //       _profilePictureUrl.value = localUser.profilePicture ?? '';
+  //     } else {
+  //       SnackbarWidget.showFailedSnackbar(response.message);
+  //     }
+  //   } catch (error) {
+  //     SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
+  //   }
+  // }
 
   void doLogout() async {
     isLoadingLogout.value = true;

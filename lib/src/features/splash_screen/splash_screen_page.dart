@@ -83,7 +83,7 @@ class SplashScreenPage extends GetView<SplashScreenController> {
                 child: Obx(
                   () => Text(
                     'Ver : ${controller.version.value}',
-                    style: TextStyles.rubik18Med,
+                    style: TextStyles.rubik18MedWhite,
                   ),
                 ),
               ),
