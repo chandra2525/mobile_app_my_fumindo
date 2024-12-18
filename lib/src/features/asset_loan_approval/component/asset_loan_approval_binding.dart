@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'asset_loan_form_controller.dart';
+import 'asset_loan_approval_controller.dart';
 
-class AssetLoanFormBinding extends Bindings {
+class AssetLoanApprovalBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(AssetLoanFormController(
+    Get.put(AssetLoanApprovalController(
       client: Get.find<Dio>(),
       local: Get.find<GetStorage>(),
     ));

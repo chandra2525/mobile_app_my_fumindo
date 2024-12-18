@@ -28,7 +28,7 @@ class AssetPage extends GetView<AssetController> {
               Get.toNamed(RouteName.assetLoanForm);
             }),
             mapTileSubTitle("Persetujuan Peminjaman", () {
-              // controller.onOpenWebPageClick();
+              Get.toNamed(RouteName.assetLoanApproval);
             }),
             mapTileSub("Pengembalian"),
             mapTileSubTitle("Daftar Pengembalian", () {

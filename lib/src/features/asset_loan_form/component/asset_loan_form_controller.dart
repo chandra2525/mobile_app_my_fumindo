@@ -292,12 +292,26 @@ class AssetLoanFormController extends GetxController {
 
     // Buat Map data yang sesuai dengan format x-www-form-urlencoded
     Map<String, String> formData = {};
+    formData['user_id'] = box.read('user_id').toString();
+    formData['customer_name'] = dropdownCustomer.value;
+    formData['notes'] = etNotes.text;
+    formData['status'] = 'PENDING';
 
     for (int i = 0; i < selectedAssetIdsMaterial.length; i++) {
-      formData['assets[$i][asset_id]'] = selectedAssetIdsMaterial[i];
-      formData['assets[$i][input_method]'] = 'Manual';
-      formData['assets[$i][quantity]'] =
-          selectedAssetQuantitiesMaterial[i].toString();
+      for (int j = 0; j < selectedAssetIdsTool.length; j++) {
+        formData['assets[$i][asset_id]'] = selectedAssetIdsMaterial[i];
+        formData['assets[$i][input_method]'] = 'Manual';
+        formData['assets[$i][quantity]'] =
+            selectedAssetQuantitiesMaterial[i].toString();
+
+        formData['assets[${j + selectedAssetIdsMaterial.length}][asset_id]'] =
+            selectedAssetIdsTool[j];
+        formData[
+                'assets[${j + selectedAssetIdsMaterial.length}][input_method]'] =
+            'Manual';
+        formData['assets[${j + selectedAssetIdsMaterial.length}][quantity]'] =
+            selectedAssetQuantitiesTool[j].toString();
+      }
     }
 
     try {
@@ -315,12 +329,17 @@ class AssetLoanFormController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("Data berhasil dikirim: ${response.data}");
+        Get.back();
+        SnackbarWidget.showSuccessSnackbar('Peminjaman berhasil dilakukan');
       } else {
         print("Gagal mengirim data. Status: ${response.statusCode}");
         print("Response: ${response.data}");
       }
-    } catch (e) {
-      print("Error: $e");
+    } catch (error) {
+      SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
+      // SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
+    } finally {
+      isLoadingAddLoan.value = false;
     }
   }
 }

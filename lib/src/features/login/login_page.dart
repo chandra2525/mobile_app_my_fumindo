@@ -104,6 +104,7 @@ class LoginPage extends GetView<LoginController> {
                             return null;
                           }
                         },
+                        keyboardType: TextInputType.text,
                         cursorColor: primary,
                         maxLength: 30,
                         controller: controller.etUsername,

@@ -125,6 +125,13 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
                   onChanged: (String? newValue) {
                     controller.dropdownCustomer.value = newValue!;
                   },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Pelanggan belum dipilih';
+                    } else {
+                      return null;
+                    }
+                  },
                   hint: Text(
                     "Pilih pelanggan",
                     style: TextStyles.rubik16Reg.copyWith(color: Colors.grey),
@@ -557,7 +564,7 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                loginButton(),
+                loginButton(context),
                 const SizedBox(height: 24),
               ],
             ),
@@ -567,9 +574,9 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
     );
   }
 
-  Widget loginButton() => Obx(
+  Widget loginButton(BuildContext context) => Obx(
         () => controller.isLoadingAddLoan.value
-            ? const CircularProgressIndicator(color: primary)
+            ? const Center(child: CircularProgressIndicator(color: primary))
             : SizedBox(
                 height: 57,
                 width: double.infinity,
@@ -582,8 +589,14 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
                         "Nama bahan: ${controller.selectedAssetNamesMaterial}");
                     final form = controller.key.currentState;
                     if (form!.validate()) {
-                      form.save();
-                      controller.sendAssetsToApi();
+                      if (controller.selectedAssetNamesMaterial.isEmpty) {
+                        showBottomGagal(context, 'Bahan belum dipilih');
+                      } else if (controller.selectedAssetNamesTool.isEmpty) {
+                        showBottomGagal(context, 'Alat belum dipilih');
+                      } else {
+                        form.save();
+                        controller.sendAssetsToApi();
+                      }
                     }
                   },
                 )),
@@ -1156,5 +1169,37 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
         );
       },
     ).then((value) {});
+  }
+
+  void showBottomGagal(BuildContext context, String message) {
+    // Membuat dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: white,
+          title: const Text(
+            'Gagal',
+            style: TextStyles.rubik18Med,
+          ),
+          content: Text(
+            message,
+            style: TextStyles.rubik16Reg,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Aksi jika memilih "Batal"
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Kembali',
+                style: TextStyles.rubik12MedRed,
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

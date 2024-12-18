@@ -3,13 +3,15 @@ import 'package:mobile_app_my_fumindo/src/features/dashboard/component/dashboard
 import 'package:mobile_app_my_fumindo/src/features/dashboard/dashboard_page.dart';
 import 'package:get/get.dart';
 
+import '../../src/features/asset_loan_approval/asset_loan_approval_page.dart';
+import '../../src/features/asset_loan_approval/component/asset_loan_approval_binding.dart';
 import '../../src/features/asset_loan_form/asset_loan_form_page.dart';
 import '../../src/features/boarding/boarding_page.dart';
 import '../../src/features/boarding/component/boarding_binding.dart';
 import '../../src/features/asset_dashboard/component/asset_dashboard_binding.dart';
 import '../../src/features/asset_dashboard/asset_dashboard_page.dart';
-import '../../src/features/dashboard/products/detail_product/product_detail_page.dart';
-import '../../src/features/dashboard/products/list/favorite_list_page.dart';
+// import '../../src/features/dashboard/products/detail_product/product_detail_page.dart';
+// import '../../src/features/dashboard/products/list/favorite_list_page.dart';
 import '../../src/features/asset_loan_form/component/asset_loan_form_binding.dart';
 import '../../src/features/login/component/login_binding.dart';
 import '../../src/features/login/login_page.dart';
@@ -46,7 +48,12 @@ class AppRoute {
     GetPage(
       name: RouteName.assetLoanForm,
       page: () => AssetLoanFormPage(),
-      binding: LoanFormBinding(),
+      binding: AssetLoanFormBinding(),
+    ),
+    GetPage(
+      name: RouteName.assetLoanApproval,
+      page: () => AssetLoanApprovalPage(),
+      binding: AssetLoanApprovalBinding(),
     ),
     // GetPage(
     //   name: RouteName.productDetail,
