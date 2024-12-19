@@ -5,6 +5,7 @@ class Endpoint {
   static const logOut = '/auth/logout';
   static const refresh = '/auth/refresh';
 
+  static const customer = '/customer';
   static const getAssetsName = '/asset/getAssetsName';
   static const asset = '/asset';
   static const loan = '/loan';

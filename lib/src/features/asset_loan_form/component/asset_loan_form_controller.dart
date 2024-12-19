@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../constants/endpoint.dart';
+import '../../../models/customer_model.dart';
 import '../../../models/material_model.dart';
 import '../../../utils/networking_util.dart';
 import '../../../widgets/snackbar_widget.dart';
@@ -17,8 +18,15 @@ class AssetLoanFormController extends GetxController {
       : _client = client,
         _local = local;
 
+  var customers = <CustomerModel>[].obs;
   var materials = <AssetNameModel>[].obs;
   var tools = <AssetNameModel>[].obs;
+
+  var globalSearchCustomer = "".obs;
+  var sortColumnCustomer = "customer_id".obs;
+  var sortOrderCustomer = "DESC".obs;
+  var currentPageCustomer = 1.obs;
+  var pageSizeCustomer = 10.obs;
 
   var globalSearchMaterial = "".obs;
   var sortColumnMaterial = "asset_id".obs;
@@ -32,16 +40,20 @@ class AssetLoanFormController extends GetxController {
   var currentPageTool = 1.obs;
   var pageSizeTool = 10.obs;
 
+  RxBool isSearchingCustomer = false.obs;
   RxBool isSearchingMaterial = false.obs;
   RxBool isSearchingTool = false.obs;
 
+  var searchControllerCustomer = TextEditingController();
   var searchControllerMaterial = TextEditingController();
   var searchControllerTool = TextEditingController();
 
+  var isLoadingCustomer = true.obs;
   var isLoadingMaterial = true.obs;
   var isLoadingTool = true.obs;
   var isLoadingAddLoan = false.obs;
 
+  var selectedCustomer = "".obs;
   var selectedAssetIdsMaterial = <String>[].obs;
   var selectedAssetNamesMaterial = <String>[].obs;
   var selectedAssetQuantitiesMaterial = <int>[].obs;
@@ -64,6 +76,8 @@ class AssetLoanFormController extends GetxController {
   // final RxSet<String> selectedMaterials = <String>{}.obs;
   // final RxList<String> selectedAssetNamesMaterial = <String>[].obs;
 
+  RefreshController refreshControllerCustomer =
+      RefreshController(initialRefresh: false);
   RefreshController refreshControllerMaterial =
       RefreshController(initialRefresh: false);
   RefreshController refreshControllerTool =
@@ -77,8 +91,78 @@ class AssetLoanFormController extends GetxController {
     formattedDateNow =
         DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(now).obs;
     etUsername.text = box.read('etUsername');
+    doGetCustomer(isLoadMore: false);
     doGetAssetNameMaterial(isLoadMore: false);
     doGetAssetNameTool(isLoadMore: false);
+  }
+
+  void toggleSearchCustomer() {
+    isSearchingCustomer.value = !isSearchingCustomer.value;
+  }
+
+  void clearTextCustomer() {
+    searchControllerCustomer.clear();
+  }
+
+  void doGetCustomer({bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      currentPageCustomer.value++;
+    } else {
+      currentPageCustomer.value = 1;
+      customers.clear();
+    }
+
+    isLoadingCustomer.value = true;
+    var params = {
+      "category": 'Bahan',
+      "search": globalSearchCustomer.value,
+      "order_by": sortColumnCustomer.value,
+      "order_direction": sortOrderCustomer.value,
+      "page": currentPageCustomer.value,
+      "pageSize": pageSizeCustomer.value,
+    };
+
+    try {
+      final response = await _client.get(
+        Endpoint.customer,
+        // data: params,
+        queryParameters: params,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${box.read('access_token')}",
+          },
+        ),
+      );
+
+      // Parsing data API
+      final List<dynamic> rows = response.data['rows'];
+      final List<CustomerModel> newCustomers = rows
+          .map((json) => CustomerModel.fromJson(json))
+          .toList()
+          .cast<CustomerModel>();
+
+      // Tambahkan data baru ke daftar jika load more
+      if (isLoadMore) {
+        customers.addAll(newCustomers);
+        customers.refresh();
+      } else {
+        customers.value = newCustomers;
+      }
+
+      // Selesai loading jika data kurang dari pageSizeCustomer
+      if (newCustomers.length < pageSizeCustomer.value) {
+        refreshControllerCustomer.loadNoData();
+      } else {
+        refreshControllerCustomer.loadComplete();
+      }
+      print("Data pelanggan bahan berhasil dimuat: ${customers.length}");
+    } catch (error) {
+      SnackbarWidget.showFailedSnackbar(
+          NetworkingUtil.errorMessage('Gagal mengambil nama pelanggan'));
+      // SnackbarWidget.showFailedSnackbar(NetworkingUtil.errorMessage(error));
+    } finally {
+      isLoadingCustomer.value = false;
+    }
   }
 
   void toggleSearchMaterial() {

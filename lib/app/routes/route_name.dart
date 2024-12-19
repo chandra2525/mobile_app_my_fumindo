@@ -7,6 +7,7 @@ abstract class RouteName {
   static const assetDashboard = "/asset/dashboard";
   static const assetLoanForm = "/asset/loan/form";
   static const assetLoanApproval = "/asset/loan/approval";
+  static const assetLoanApprovalDetail = "/asset/loan/approval/detail";
 
   static const editProfile = '/profile/edit';
   static const productDetail = '/product/detail';

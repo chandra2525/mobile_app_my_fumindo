@@ -3,8 +3,10 @@ import 'package:mobile_app_my_fumindo/src/features/dashboard/component/dashboard
 import 'package:mobile_app_my_fumindo/src/features/dashboard/dashboard_page.dart';
 import 'package:get/get.dart';
 
+import '../../src/features/asset_loan_approval/asset_loan_approval_detail_page.dart';
 import '../../src/features/asset_loan_approval/asset_loan_approval_page.dart';
 import '../../src/features/asset_loan_approval/component/asset_loan_approval_binding.dart';
+import '../../src/features/asset_loan_approval/component/asset_loan_approval_detail_binding.dart';
 import '../../src/features/asset_loan_form/asset_loan_form_page.dart';
 import '../../src/features/boarding/boarding_page.dart';
 import '../../src/features/boarding/component/boarding_binding.dart';
@@ -54,6 +56,11 @@ class AppRoute {
       name: RouteName.assetLoanApproval,
       page: () => AssetLoanApprovalPage(),
       binding: AssetLoanApprovalBinding(),
+    ),
+    GetPage(
+      name: RouteName.assetLoanApprovalDetail,
+      page: () => AssetLoanApprovalDetailPage(),
+      binding: AssetLoanApprovalDetailBinding(),
     ),
     // GetPage(
     //   name: RouteName.productDetail,

@@ -14,6 +14,12 @@ class TextStyles {
     fontWeight: FontWeight.w500,
     color: textColor,
   );
+  static const TextStyle rubik20MedRed = TextStyle(
+    fontFamily: 'Rubik',
+    fontSize: 22,
+    fontWeight: FontWeight.w500,
+    color: primary,
+  );
   static const TextStyle rubik18Med = TextStyle(
     fontFamily: 'Rubik',
     fontSize: 20,
@@ -65,7 +71,7 @@ class TextStyles {
   static const TextStyle rubik14Med = TextStyle(
     fontFamily: 'Rubik',
     fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     color: textColor,
   );
   static const TextStyle rubik14MedGrey = TextStyle(
@@ -80,6 +86,18 @@ class TextStyles {
     fontWeight: FontWeight.w500,
     color: white,
   );
+  static const TextStyle rubik14MedOrange = TextStyle(
+    fontFamily: 'Rubik',
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: orange,
+  );
+  static const TextStyle rubik14Reg = TextStyle(
+    fontFamily: 'Rubik',
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: textColor,
+  );
   static const TextStyle rubik12MedRed = TextStyle(
     fontFamily: 'Rubik',
     fontSize: 16,
@@ -93,6 +111,18 @@ class TextStyles {
     color: primary,
   );
   static const TextStyle rubik12MedWhite = TextStyle(
+    fontFamily: 'Rubik',
+    fontSize: 14,
+    fontWeight: FontWeight.w300,
+    color: white,
+  );
+  static const TextStyle rubik12Reg = TextStyle(
+    fontFamily: 'Rubik',
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: textColor,
+  );
+  static const TextStyle rubik12RegWhite = TextStyle(
     fontFamily: 'Rubik',
     fontSize: 14,
     fontWeight: FontWeight.w400,

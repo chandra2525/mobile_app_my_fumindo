@@ -12,6 +12,7 @@ const grey2 = Color(0xffADADAD);
 const grey3 = Color(0xffD1D1D1);
 const grey4 = Color(0xff68778D);
 const grey5 = Color(0xffBDBDBD);
+const grey6 = Color(0xffF1F1F1);
 const shadowColorAppbar = Color.fromARGB(26, 40, 41, 61);
 const shadowColorNavbar = Color(0x0D28293D);
 const drawerColor = Color.fromARGB(255, 28, 28, 28);
@@ -19,6 +20,7 @@ const green = Color(0xff00C954);
 const blue = Color(0xff2F80ED);
 const orange = Color(0xffFFA100);
 const whiteGrey = Color(0xffFAF7F7);
+const orangeBackground = Color(0xffFAEFE1);
 
 const gray100 = Color(0xffF0F0F0);
 const gray200 = Color(0xffE6E6E6);

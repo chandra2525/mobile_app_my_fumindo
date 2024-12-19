@@ -50,7 +50,7 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteGrey,
+      backgroundColor: white,
       appBar: AppBar(
         backgroundColor: white,
         elevation: 10.0,

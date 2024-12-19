@@ -45,6 +45,8 @@ class AssetLoanApprovalController extends GetxController {
 
   final box = GetStorage();
 
+  var loanId = "".obs;
+
   @override
   void onInit() {
     super.onInit();
