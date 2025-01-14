@@ -53,7 +53,9 @@ class AssetLoanFormController extends GetxController {
   var isLoadingTool = true.obs;
   var isLoadingAddLoan = false.obs;
 
-  var selectedCustomer = "".obs;
+  var selectedCustomerId = "".obs;
+  var selectedCustomerName = "".obs;
+
   var selectedAssetIdsMaterial = <String>[].obs;
   var selectedAssetNamesMaterial = <String>[].obs;
   var selectedAssetQuantitiesMaterial = <int>[].obs;
@@ -67,7 +69,7 @@ class AssetLoanFormController extends GetxController {
   final etNotes = TextEditingController();
 
   final box = GetStorage();
-  var dropdownCustomer = ''.obs;
+  // var dropdownCustomer = ''.obs;
   // var dropdownProjectType = ''.obs;
 
   DateTime now = DateTime.now();
@@ -114,7 +116,6 @@ class AssetLoanFormController extends GetxController {
 
     isLoadingCustomer.value = true;
     var params = {
-      "category": 'Bahan',
       "search": globalSearchCustomer.value,
       "order_by": sortColumnCustomer.value,
       "order_direction": sortOrderCustomer.value,
@@ -377,7 +378,7 @@ class AssetLoanFormController extends GetxController {
     // Buat Map data yang sesuai dengan format x-www-form-urlencoded
     Map<String, String> formData = {};
     formData['user_id'] = box.read('user_id').toString();
-    formData['customer_name'] = dropdownCustomer.value;
+    formData['customer_name'] = selectedCustomerName.value;
     formData['notes'] = etNotes.text;
     formData['status'] = 'PENDING';
 

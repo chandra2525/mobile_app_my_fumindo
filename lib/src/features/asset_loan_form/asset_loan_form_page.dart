@@ -28,7 +28,11 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
   //     RefreshController(initialRefresh: false);
 
   Future<void> refresh(type) async {
-    if (type == "material") {
+    if (type == "customer") {
+      controller.isLoadingCustomer.value = true;
+      controller.clearTextCustomer();
+      controller.refreshControllerCustomer.refreshCompleted();
+    } else if (type == "material") {
       controller.isLoadingMaterial.value = true;
       controller.clearTextMaterial();
       controller.refreshControllerMaterial.refreshCompleted();
@@ -40,7 +44,9 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
   void _onScrollDown(type) async {
     await Future.delayed(const Duration(milliseconds: 1000));
 
-    if (type == "material") {
+    if (type == "customer") {
+      controller.doGetCustomer(isLoadMore: true);
+    } else if (type == "material") {
       controller.doGetAssetNameMaterial(isLoadMore: true);
     } else if (type == "tool") {
       controller.doGetAssetNameTool(isLoadMore: true);
@@ -116,43 +122,59 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField(
-                  decoration: textInputDecorationForm.copyWith(
-                      hintText: "Pilih pelanggan"),
-                  value: controller.dropdownCustomer.value.isEmpty
-                      ? null
-                      : controller.dropdownCustomer.value,
-                  onChanged: (String? newValue) {
-                    controller.dropdownCustomer.value = newValue!;
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Pelanggan belum dipilih';
-                    } else {
-                      return null;
-                    }
-                  },
-                  hint: Text(
-                    "Pilih pelanggan",
-                    style: TextStyles.rubik16Reg.copyWith(color: Colors.grey),
+
+                Obx(
+                  () => TextFormField(
+                    cursorColor: primary,
+                    onTap: () {
+                      showBottomCustomer(context);
+                    },
+                    readOnly: true,
+                    controller: TextEditingController(
+                        text: controller.selectedCustomerName.value),
+                    style: TextStyles.rubik16Reg,
+                    decoration: textInputDecorationForm.copyWith(
+                      hintText: 'Pilih pelanggan',
+                    ),
                   ),
-                  style: TextStyles.rubik16Reg,
-                  items: <String>[
-                    'PT Jakarta Sereal',
-                    'PT Sumber Roso Karawang',
-                    'PT Bogasari Jakarta',
-                    'PT SRA Karawang',
-                    'PT Wilmar Nabati Cilegon',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyles.rubik16Reg,
-                      ),
-                    );
-                  }).toList(),
                 ),
+                // DropdownButtonFormField(
+                //   decoration: textInputDecorationForm.copyWith(
+                //       hintText: "Pilih pelanggan"),
+                //   value: controller.dropdownCustomer.value.isEmpty
+                //       ? null
+                //       : controller.dropdownCustomer.value,
+                //   onChanged: (String? newValue) {
+                //     controller.dropdownCustomer.value = newValue!;
+                //   },
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Pelanggan belum dipilih';
+                //     } else {
+                //       return null;
+                //     }
+                //   },
+                //   hint: Text(
+                //     "Pilih pelanggan",
+                //     style: TextStyles.rubik16Reg.copyWith(color: Colors.grey),
+                //   ),
+                //   style: TextStyles.rubik16Reg,
+                //   items: <String>[
+                //     'PT Jakarta Sereal',
+                //     'PT Sumber Roso Karawang',
+                //     'PT Bogasari Jakarta',
+                //     'PT SRA Karawang',
+                //     'PT Wilmar Nabati Cilegon',
+                //   ].map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(
+                //         value,
+                //         style: TextStyles.rubik16Reg,
+                //       ),
+                //     );
+                //   }).toList(),
+                // ),
                 const SizedBox(height: 20),
                 const Text(
                   'Tanggal Ambil',
@@ -601,6 +623,285 @@ class AssetLoanFormPage extends GetView<AssetLoanFormController> {
                   },
                 )),
       );
+
+  void showBottomCustomer(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(24.0),
+        ),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(24.0),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.635,
+            child: Scaffold(
+              backgroundColor: white,
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight) * 1.35,
+                child: Column(
+                  children: [
+                    Obx(
+                      () => Padding(
+                        padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                        child: AppBar(
+                          backgroundColor: white,
+                          elevation: 0,
+                          leadingWidth:
+                              controller.isSearchingCustomer.value ? 50 : 0,
+                          titleSpacing: 0,
+                          centerTitle: controller.isSearchingCustomer.value
+                              ? true
+                              : false,
+                          title: Obx(() {
+                            if (controller.isSearchingCustomer.value) {
+                              return SizedBox(
+                                height: 40,
+                                child: TextFormSearch(
+                                    hint: "Cari bahan",
+                                    suffixIcon:
+                                        "assets/svg/close_circle_icon.svg",
+                                    prefixIcon: "assets/svg/search_icon.svg",
+                                    // prefixOnTap: salesController.customer,
+                                    controller:
+                                        controller.searchControllerCustomer,
+                                    controllerClear:
+                                        controller.clearTextCustomer,
+                                    // onChanged: salesController
+                                    //     .onSearchTextChanged,
+                                    onFieldSubmitted: (value) {
+                                      controller.globalSearchCustomer.value =
+                                          controller
+                                              .searchControllerCustomer.text;
+                                      controller.doGetCustomer(
+                                          isLoadMore: false);
+                                    }),
+                              );
+                            } else {
+                              return const Padding(
+                                padding: EdgeInsets.only(left: 24.0),
+                                child: Text(
+                                  'Pilih Pelanggan',
+                                  style: TextStyles.rubik18Med,
+                                ),
+                              );
+                            }
+                          }),
+                          actions: [
+                            Obx(
+                              () => controller.isSearchingCustomer.value
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 16.0),
+                                      child: Container(),
+                                    )
+                                  : Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 16.0),
+                                      child: IconButton(
+                                        icon: Image.asset(icSearch,
+                                            height: 24.0, width: 24.0),
+                                        onPressed:
+                                            controller.toggleSearchCustomer,
+                                      ),
+                                    ),
+                            ),
+                          ],
+                          leading: Obx(
+                            () => IconButton(
+                              icon: controller.isSearchingCustomer.value
+                                  ? const Icon(
+                                      Icons.keyboard_arrow_left_rounded,
+                                      size: 34.0,
+                                      color: primary,
+                                    )
+                                  : Container(),
+                              onPressed: controller.toggleSearchCustomer,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      thickness: 1,
+                      height: 1,
+                      color: grey3,
+                    ),
+                  ],
+                ),
+              ),
+              body: Obx(() => controller.isLoadingCustomer.value
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.5 - 0.635,
+                      child: const SizedBox(
+                        height: double.maxFinite,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  color: primary,
+                                  backgroundColor: white,
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Memuat data',
+                                  style: TextStyles.rubik12MedGrey,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : SmartRefresher(
+                      physics: const BouncingScrollPhysics(),
+                      enablePullDown: false,
+                      enablePullUp: true,
+                      header: const ClassicHeader(),
+                      controller: controller.refreshControllerCustomer,
+                      onRefresh: () => refresh("customer"),
+                      onLoading: () => _onScrollDown("customer"),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: List.generate(controller.customers.length,
+                              (index) {
+                            var data = controller.customers[index];
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    controller.selectedCustomerId.value =
+                                        data.customerId.toString();
+                                    controller.selectedCustomerName.value =
+                                        data.customerName.toString();
+                                    print(
+                                        "ID Customer terpilih: ${controller.selectedCustomerId.value}");
+                                    print(
+                                        "Nama Customer terpilih: ${controller.selectedCustomerName.value}");
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(24, 9, 24, 9),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                            child: Text(
+                                          data.customerName,
+                                          style: TextStyles.rubik16Med,
+                                        )),
+                                        Container(
+                                          decoration: ShapeDecoration(
+                                            color: primary,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        50.0)),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Container(
+                                              height: 16.0,
+                                              width: 16.0,
+                                              decoration: ShapeDecoration(
+                                                color: white,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50.0)),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2.5),
+                                                child: controller
+                                                            .selectedCustomerId
+                                                            .value ==
+                                                        data.customerId
+                                                            .toString()
+                                                    ? Container(
+                                                        height: 9.0,
+                                                        width: 9.0,
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          color: primary,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50.0)),
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                        ),
+                      ),
+                    )),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 50.0,
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: primary, // Set the desired border color
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: primary,
+                              backgroundColor: white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              elevation: 0,
+                              // padding: EdgeInsets.zero,
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0)),
+                          child: const Text(
+                            'Kembali',
+                            style: TextStyles.rubik12MedRed,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((value) {});
+  }
 
   void showBottomMaterial(BuildContext context) {
     showModalBottomSheet(
